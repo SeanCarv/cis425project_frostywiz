@@ -66,6 +66,28 @@ h2 {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
+#description p {
+    text-align: left;
+    margin-left: 50px;
+    margin-top: 5px;
+    padding: 5px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+#description ol {
+    margin-left: 50px;
+    padding-left: 0;
+}
+
+#description ol li {
+    margin-bottom: 10px; 
+}
+
+#description ol p {
+    margin-left: 0; 
+}
+
+
 #navhero {
     width: fit-content;
     height: fit-content;
