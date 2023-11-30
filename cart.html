@@ -84,106 +84,107 @@
 
       </main>
     </div>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Retrieve selected items from the local storage
-        const cartItems = JSON.parse(localStorage.getItem('cartItems'));
-        // Reference to the cart table body
-        const cartTableBody = document.querySelector('#cart-table-container table tbody');
-        // Reference to the total cost span
-        const totalCostSpan = document.getElementById('totalCost');
-        const subtotalCostSpan = document.getElementById('subtotalCost');
-        const taxSpan = document.getElementById('tax');
 
-        // Initialize total cost
-        let totalCost = 0;
-        let tax = 0;
-        let subtotalCost = 0;
+    <!-- ... (your existing HTML code) -->
 
-        // Function to format a number as currency
-        function formatCurrency(value) {
-          return `$${value.toFixed(2)}`;
-        }
-
-        // Function to handle item deletion when that checkboxes are checked
-        function handleItemDelete() {
-          const checkboxes = document.querySelectorAll('#cart-table-container table tbody input[type="checkbox"]');
-          checkboxes.forEach((checkbox, index) => {
-            checkbox.addEventListener('change', () => {
-              if (checkbox.checked) {
-                // Delete the corresponding row from the table
-                const row = checkbox.closest('tr');
-                row.remove();
-                // Update the total cost when an item is removed
-                subtotalCost -= cartItems[index].price * cartItems[index].quantity;
-                totalCost -= cartItems[index].price * cartItems[index].quantity;
-                const tax = totalCost * 0.1;
-                totalCost += tax;
-                totalCostSpan.textContent = formatCurrency(totalCost);
-                subtotalCostSpan.textContent = formatCurrency(subtotalCost);
-                taxSpan.textContent = formatCurrency(tax)
-              }
-            });
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Retrieve selected items from the local storage
+      const cartItems = JSON.parse(localStorage.getItem('cartItems'));
+      // Reference to the cart table body
+      const cartTableBody = document.querySelector('#cart-table-container table tbody');
+      // Reference to the total cost span
+      const totalCostSpan = document.getElementById('totalCost');
+      const subtotalCostSpan = document.getElementById('subtotalCost');
+      const taxSpan = document.getElementById('tax');
+      // Reference to the submission status element
+      const submissionStatus = document.getElementById('submissionStatus');
+  
+      // Initialize total cost
+      let totalCost = 0;
+      let tax = 0;
+      let subtotalCost = 0;
+  
+      // Function to format a number as currency
+      function formatCurrency(value) {
+        return `$${value.toFixed(2)}`;
+      }
+  
+      // Function to handle item deletion when that checkboxes are checked
+      function handleItemDelete() {
+        const checkboxes = document.querySelectorAll('#cart-table-container table tbody input[type="checkbox"]');
+        checkboxes.forEach((checkbox, index) => {
+          checkbox.addEventListener('change', () => {
+            if (checkbox.checked) {
+              // Delete the corresponding row from the table
+              const row = checkbox.closest('tr');
+              row.remove();
+              // Update the total cost when an item is removed
+              subtotalCost -= cartItems[index].price * cartItems[index].quantity;
+              totalCost -= cartItems[index].price * cartItems[index].quantity;
+              const tax = totalCost * 0.1;
+              totalCost += tax;
+              totalCostSpan.textContent = formatCurrency(totalCost);
+              subtotalCostSpan.textContent = formatCurrency(subtotalCost);
+              taxSpan.textContent = formatCurrency(tax);
+            }
           });
-        }
-
-        // populate the cart table with selected items
-        if (cartItems && cartItems.length > 0) {
-          cartItems.forEach(item => {
-            const row = cartTableBody.insertRow();
-            const nameCell = row.insertCell(0);
-            const priceCell = row.insertCell(1);
-            const quantityCell = row.insertCell(2);
-            const deleteCell = row.insertCell(3); // Add a cell for the Delete checkbox
-
-            nameCell.textContent = item.name;
-            priceCell.textContent = formatCurrency(item.price);
-            quantityCell.textContent = item.quantity;
-
-            // Create a checkbox for deletion
-            const deleteCheckbox = document.createElement('input');
-            deleteCheckbox.type = 'checkbox';
-            deleteCheckbox.id = `deleteCheckbox${row.rowIndex}`; // Assing a unique ID
-            deleteCell.appendChild(deleteCheckbox);
-
-            // Create a label for the checkbox
-            const deleteLabel = document.createElement('label');
-            deleteLabel.setAttribute('for', `deleteCheckbox${row.rowIndex}`); // Associate with the checkbox
-            deleteLabel.textContent = 'Yes';
-            deleteCell.appendChild(deleteLabel);
-
-            // Update the total cost
-            subtotalCost += item.price * item.quantity;
-            totalCost += item.price * item.quantity
-          });
-
-          // Add 10% tax to the total cost
-          const tax = totalCost * 0.1;
-          totalCost += tax;
-
-          console.log(totalCost)
-
-          // Update the total cost display
-          totalCostSpan.textContent = formatCurrency(totalCost);
-          subtotalCostSpan.textContent = formatCurrency(subtotalCost);
-          taxSpan.textContent = formatCurrency(tax);
-
-        }
-
-        // call the function to set up item deletion
-        handleItemDelete();
-
-      });
-
+        });
+      }
+  
+      // populate the cart table with selected items
+      if (cartItems && cartItems.length > 0) {
+        cartItems.forEach(item => {
+          const row = cartTableBody.insertRow();
+          const nameCell = row.insertCell(0);
+          const priceCell = row.insertCell(1);
+          const quantityCell = row.insertCell(2);
+          const deleteCell = row.insertCell(3); // Add a cell for the Delete checkbox
+  
+          nameCell.textContent = item.name;
+          priceCell.textContent = formatCurrency(item.price);
+          quantityCell.textContent = item.quantity;
+  
+          // Create a checkbox for deletion
+          const deleteCheckbox = document.createElement('input');
+          deleteCheckbox.type = 'checkbox';
+          deleteCheckbox.id = `deleteCheckbox${row.rowIndex}`; // Assing a unique ID
+          deleteCell.appendChild(deleteCheckbox);
+  
+          // Create a label for the checkbox
+          const deleteLabel = document.createElement('label');
+          deleteLabel.setAttribute('for', `deleteCheckbox${row.rowIndex}`); // Associate with the checkbox
+          deleteLabel.textContent = 'Yes';
+          deleteCell.appendChild(deleteLabel);
+  
+          // Update the total cost
+          subtotalCost += item.price * item.quantity;
+          totalCost += item.price * item.quantity;
+        });
+  
+        // Add 10% tax to the total cost
+        const tax = totalCost * 0.1;
+        totalCost += tax;
+  
+        console.log(totalCost);
+  
+        // Update the total cost display
+        totalCostSpan.textContent = formatCurrency(totalCost);
+        subtotalCostSpan.textContent = formatCurrency(subtotalCost);
+        taxSpan.textContent = formatCurrency(tax);
+      }
+  
+      // call the function to set up item deletion
+      handleItemDelete();
+  
       // Add event listener to the user-info-form for submission and order processing
       const userInfoForm = document.querySelector('.userInfoForm');
-      const submissionStatus = document.getElementById('submissionStatus');
-
+  
       userInfoForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-
-        // collect form data
-        const formData = new FormData(userInfoForm);
+  
+                // collect form data
+                const formData = new FormData(userInfoForm);
         console.log(formData);
 
         // Retrieve the selected payment option
@@ -231,8 +232,7 @@
         orderData.customer.payment = selectedPayment;
 
         console.log("orderData is ", orderData);
-
-
+  
         try {
           // Send a POST request to the server to handle form submission 
           const response = await fetch('/customer', {
@@ -240,22 +240,20 @@
             body: JSON.stringify(orderData),
             headers: { 'Content-Type': 'application/json' }
           });
-
+  
           if (response.ok) {
             userInfoForm.reset();
-            submissionStatus.textContent = "Customer data submitted successfully";
-          }
-          else {
+            submissionStatus.textContent = "Information Submitted!"; // Display the success message
+          } else {
             submissionStatus.textContent = "Error submitting order. Please try again."
           }
         } catch (error) {
           submissionStatus.textContent = "An error occurred. Please try again later.";
           console.error('An error occurred while submitting the form: ', error)
         }
-
       });
-
-    </script>
+    });
+  </script>
 
     <footer style='text-align: center;'>
       <div class="socialMediaLinks">
